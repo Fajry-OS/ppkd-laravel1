@@ -5,5 +5,5 @@
 
 @extends('layout_2.app')
 @section('content')
-    Tesst
+    <h1>Welcome Admin</h1>
 @endsection
