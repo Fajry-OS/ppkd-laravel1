@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProfController extends Controller
 {
@@ -63,6 +65,7 @@ class ProfController extends Controller
             'instagram' => $request->instagram,
             'alamat' => $request->alamat,
         ]);
+
         return redirect()->route('profile.index')->with('success', 'Data Berhasil Ditambah');
     }
 
@@ -79,7 +82,8 @@ class ProfController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admin.profile.edit');
+        $profile = Profile::findOrFail($id);
+        return view('admin.profile.edit', compact('profile'));
     }
 
     /**
@@ -87,8 +91,44 @@ class ProfController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //put
+        $profile = Profile::findOrFail($id);
+        $request->validate([
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'nama_lengkap' => 'required|string|max:55',
+            'no_telpon' => 'required|string|max:15',
+            'email' => 'required|string|email|max:255',
+            'deskripsi' => 'nullable|string',
+            'facebook' => 'nullable|url',
+            'twitter' => 'nullable|url',
+            'linkedin' => 'nullable|url',
+            'instagram' => 'nullable|url',
+            'alamat' => 'nullable|string|max:250',
+        ]);
+
+        //Simpan gambar jika di upload
+        if ($request->hasFile('picture')) {
+            //hapus gambar lama jika ada
+            if ($profile->picture) {
+                Storage::delete('public/image/' . $profile->picture);
+            }
+            $image = $request->file('picture');
+            $path = $image->store('public/image');
+            $name = basename($path); //menyimpan file saja
+            $profile->picture = $name;
+        }
+        $profile->nama_lengkap = $request->nama_lengkap;
+        $profile->no_telpon = $request->no_telpon;
+        $profile->email = $request->email;
+        $profile->facebook = $request->facebook;
+        $profile->twitter = $request->twitter;
+        $profile->linkedin = $request->linkedin;
+        $profile->instagram = $request->instagram;
+        $profile->deskripsi = $request->deskripsi;
+        $profile->save();
+
+        return redirect()->route('profile.index')->with('success', 'Update Profile berhasil');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -96,5 +136,13 @@ class ProfController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function softDelete(string $id)
+    {
+        $profile = Profile::findOrFail($id);
+        $profile->delete();
+
+        return redirect()->route('profile.index')->with('success', 'Data berhasil di delete sementara');
     }
 }

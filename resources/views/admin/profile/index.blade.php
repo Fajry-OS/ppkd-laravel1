@@ -13,6 +13,7 @@
                             <th>Nama</th>
                             <th>Email</th>
                             <th>No.Telp</th>
+                            <th>Gambar</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -24,9 +25,11 @@
                                 <td>{{ $item->nama_lengkap }}</td>
                                 <td>{{ $item->email }}</td>
                                 <td>{{ $item->no_telpon }}</td>
+                                <td><img src="{{ asset('storage/image/' . $item->picture) }}" alt=""></td>
                                 <td class="d-flex justify-content-center">
-                                    <a href="{{ route('profile.edit', $item->id) }}" class="btn btn-success btn-sm mr-2">Edit</a>
-                                    <form action="" method="POST">
+                                    <a href="{{ route('profile.edit', $item->id) }}"
+                                        class="btn btn-success btn-sm mr-2">Edit</a>
+                                    <form action="{{ route('profile.softdelete', $item->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>

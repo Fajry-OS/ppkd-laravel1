@@ -38,10 +38,15 @@ Route::get('admin/profile/create', [ProfController::class, 'create'])->name('pro
 Route::POST('admin/profile/store', [ProfController::class, 'store'])->name('profile.store')->middleware(['auth', 'admin']);
 Route::get('admin/profile/edit/{id}', [ProfController::class, 'edit'])->name('profile.edit')->middleware(['auth', 'admin']);
 
+//Update dan softdelete
+Route::get('admin/profile/edit/{id}', [ProfController::class, 'edit'])->name('profile.edit')->middleware(['auth', 'admin']);
+Route::put('admin/profile/update/{id}', [ProfController::class, 'update'])->name('profile.update')->middleware(['auth', 'admin']);
+Route::delete('admin/profile/softdelete/{id}', [ProfController::class, 'softdelete'])->name('profile.softdelete')->middleware(['auth', 'admin']);
+
 Route::middleware('auth')->group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';

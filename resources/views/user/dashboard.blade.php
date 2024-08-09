@@ -1,5 +1,4 @@
-@extends('dashboard')
+@extends('layout_2.app')
 @section('content')
-    tes 
-    {{ Auth::user()->level->nama_level }}
+    <h1>Welcome User</h1>
 @endsection

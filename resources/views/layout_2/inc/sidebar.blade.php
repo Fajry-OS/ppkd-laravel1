@@ -10,10 +10,21 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
+    @if (Auth::user()->id_level == 1)
+        @php
+            $dashboard = url('admin/dashboard');
+            $profile = url('admin/profile');
+        @endphp
+    @elseif(Auth::user()->id_level == 2)
+        @php
+            $dashboard = url('user/dashboard');
+            $profile = url('user/profile');
+        @endphp
+    @endif
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="{{ url('admin/dashboard') }}">
+        <a class="nav-link" href="{{ $dashboard }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -36,7 +47,7 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom Components:</h6>
-                <a class="collapse-item" href="{{ url('admin/profile') }}">Profile</a>
+                <a class="collapse-item" href="{{ $profile }}">Profile</a>
                 <a class="collapse-item" href="index.php?page=pricing">Pricing</a>
             </div>
         </div>

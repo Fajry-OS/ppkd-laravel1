@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Profile extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'picture',
         'nama_lengkap',
@@ -20,4 +21,5 @@ class Profile extends Model
         'instagram',
         'alamat',
     ];
+    protected $date = ['deleted_at'];
 }
